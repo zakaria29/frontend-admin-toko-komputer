@@ -62,6 +62,7 @@ export default class Transaction extends React.Component{
                         key = {item.transaksi_id}
                         transaction_id = {item.transaksi_id}
                         customer_name = {item.customer.name}
+                        customer_address = {item.customer.address}
                         time = {item.waktu}
                         products = {item.detail_transaksi}
                          />

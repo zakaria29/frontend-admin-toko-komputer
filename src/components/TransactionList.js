@@ -20,13 +20,23 @@ export default class TransactionList extends React.Component{
                 {/* list */}
                 <div className="card col-sm-12 my-1">
                     <div className="card-body row">
-                        <div className="col-10">
-                            <h5>Customer: {this.props.customer_name}</h5>
-                            <h6>Time: { this.convertTime(this.props.time) }</h6>
-                            <h6>Amount: { this.getAmount(this.props.products) }</h6>
+                        <div className="col-lg-4 col-sm-12">
+                            <small className="text-info">Customer</small>
+                            <h6>{this.props.customer_name}</h6>
                         </div>
-                        <div className="col-2">
-                            <button className="btn btn-block btn-success" data-toggle="modal"
+                        <div className="col-lg-4 col-sm-12">
+                            <small className="text-info">Address</small>
+                            <h6>{this.props.customer_address}</h6>
+                        </div>
+                        <div className="col-lg-2 col-sm-12">
+                            <small className="text-info">Total Amount</small>
+                            <h6 className="text-danger">Rp { this.getAmount(this.props.products) }</h6>
+                        </div>
+                        <div className="col-lg-2 col-sm-12">
+                            <small className="text-bold text-info">
+                                Time: { this.convertTime(this.props.time) }
+                            </small>
+                            <button className="btn btn-sm btn-block btn-success" data-toggle="modal"
                             data-target={`#modalDetail${this.props.transaction_id}`}>
                                 Details
                             </button>
@@ -60,16 +70,24 @@ export default class TransactionList extends React.Component{
                                             <tr key={item.product_id}>
                                                 <td>{`${index + 1}`}</td>
                                                 <td>{item.product.name}</td>
-                                                <td>{item.price}</td>
+                                                <td>Rp {item.price}</td>
                                                 <td>{item.qty}</td>
-                                                <td>{item.price * item.qty}</td>
+                                                <td className="text-right">Rp {item.price * item.qty}</td>
                                             </tr>
                                         ))}
+                                        <tr>
+                                            <td colSpan="4" className="text-danger text-bold">
+                                                <h4>Total</h4>
+                                            </td>
+                                            <td className="text-right text-danger text-bold">
+                                                <h4>
+                                                Rp { this.getAmount(this.props.products) }
+                                                </h4>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                                <h4 className="text-bold text-danger">
-                                    Total Amount: { this.getAmount(this.props.products) }
-                                </h4>
+                                
                             </div>
                         </div>
                     </div>
