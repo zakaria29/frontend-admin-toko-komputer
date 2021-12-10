@@ -2,6 +2,7 @@
   "name": "toko_komputer",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://168.138.182.251/toko-komputer",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

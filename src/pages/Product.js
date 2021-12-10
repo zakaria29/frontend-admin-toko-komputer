@@ -1,12 +1,12 @@
 import React from "react"
 import Navbar from "../components/Navbar";
 import ProductList from "../components/ProductList"
-import { base_url, product_image_url } from "../config.js";
+import { base_url, product_image_url, base_name } from "../config.js";
 import $ from "jquery"
 import axios from "axios"
 
-export default class Product extends React.Component{
-    constructor(){
+export default class Product extends React.Component {
+    constructor() {
         super()
         this.state = {
             products: [],
@@ -23,7 +23,7 @@ export default class Product extends React.Component{
         if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
         } else {
-            window.location = "/login"
+            window.location = base_name + "/login"
         }
 
         this.headerConfig.bind(this)
@@ -39,19 +39,19 @@ export default class Product extends React.Component{
     getProduct = () => {
         let url = base_url + "/product"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({products: response.data})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ products: response.data })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     Add = () => {
@@ -95,18 +95,18 @@ export default class Product extends React.Component{
         let url = base_url + "/product"
         if (this.state.action === "insert") {
             axios.post(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getProduct()
-            })
-            .catch(error => console.log(error))
-        } else if(this.state.action === "update") {
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getProduct()
+                })
+                .catch(error => console.log(error))
+        } else if (this.state.action === "update") {
             axios.put(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getProduct()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getProduct()
+                })
+                .catch(error => console.log(error))
         }
     }
 
@@ -114,96 +114,97 @@ export default class Product extends React.Component{
         if (window.confirm("are you sure will delete this item?")) {
             let url = base_url + "/product/" + selectedItem.product_id
             axios.delete(url, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getProduct()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getProduct()
+                })
+                .catch(error => console.log(error))
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getProduct()
     }
+    // constructor -> render -> componenDidMount
 
-    render(){
+    render() {
         return (
             <div>
-               <Navbar />
-               <div className="container">
-                   <h3 className="text-bold text-info mt-2">Product List</h3>
-                   <div className="row">
-                       { this.state.products.map( item => (
-                           <ProductList
-                           key = {item.product_id}
-                           name = {item.name}
-                           price = {item.price}
-                           stock = {item.stock}
-                           image = { product_image_url + "/" + item.image}
-                           onEdit = {() => this.Edit(item)}
-                           onDrop = {() => this.dropProduct(item)}
+                <Navbar />
+                <div className="container">
+                    <h3 className="text-bold text-info mt-2">Product List</h3>
+                    <div className="row">
+                        {this.state.products.map(item => (
+                            <ProductList
+                                key={item.product_id}
+                                name={item.name}
+                                price={item.price}
+                                stock={item.stock}
+                                image={product_image_url + "/" + item.image}
+                                onEdit={() => this.Edit(item)}
+                                onDrop={() => this.dropProduct(item)}
                             />
-                       )) }
-                   </div>
-                   <button className="btn btn-success" onClick={() => this.Add()}>
-                       Add Product
-                   </button>
+                        ))}
+                    </div>
+                    <button className="btn btn-success" onClick={() => this.Add()}>
+                        Add Product
+                    </button>
                 </div>
 
-                 {/* modal product  */}
-                 <div className="modal fade" id="modal_product">
-                     <div className="modal-dialog">
-                         <div className="modal-content">
-                             <div className="modal-header bg-info text-white">
-                                 <h4>Form Product</h4>
-                             </div>
-                             <div className="modal-body">
-                                 <form onSubmit={ev => this.saveProduct(ev)}>
-                                     Product Name
-                                     <input type="text" className="form-control mb-1"
-                                     value={this.state.name}
-                                     onChange={ev => this.setState({name: ev.target.value})}
-                                     required
-                                     />
+                {/* modal product  */}
+                <div className="modal fade" id="modal_product">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header bg-info text-white">
+                                <h4>Form Product</h4>
+                            </div>
+                            <div className="modal-body">
+                                <form onSubmit={ev => this.saveProduct(ev)}>
+                                    Product Name
+                                    <input type="text" className="form-control mb-1"
+                                        value={this.state.name}
+                                        onChange={ev => this.setState({ name: ev.target.value })}
+                                        required
+                                    />
 
                                     Product Stock
-                                     <input type="number" className="form-control mb-1"
-                                     value={this.state.stock}
-                                     onChange={ev => this.setState({stock: ev.target.value})}
-                                     required
-                                     />
+                                    <input type="number" className="form-control mb-1"
+                                        value={this.state.stock}
+                                        onChange={ev => this.setState({ stock: ev.target.value })}
+                                        required
+                                    />
 
                                     Product Price
-                                     <input type="number" className="form-control mb-1"
-                                     value={this.state.price}
-                                     onChange={ev => this.setState({price: ev.target.value})}
-                                     required
-                                     />
+                                    <input type="number" className="form-control mb-1"
+                                        value={this.state.price}
+                                        onChange={ev => this.setState({ price: ev.target.value })}
+                                        required
+                                    />
 
-                                    { this.state.action === "update" && this.state.uploadFile === false ? (
+                                    {this.state.action === "update" && this.state.uploadFile === false ? (
                                         <button className="btn btn-sm btn-dark mb-1 btn-block"
-                                        onClick={() => this.setState({uploadFile: true})}>
+                                            onClick={() => this.setState({ uploadFile: true })}>
                                             Change Product Image
                                         </button>
                                     ) : (
                                         <div>
                                             Product Image
                                             <input type="file" className="form-control mb-1"
-                                            onChange={ev => this.setState({image: ev.target.files[0]})}
-                                            
-                                            required
+                                                onChange={ev => this.setState({ image: ev.target.files[0] })}
+
+                                                required
                                             />
                                         </div>
-                                    ) }
+                                    )}
 
                                     <button type="submit" className="btn btn-block btn-success">
                                         Simpan
                                     </button>
-                                 </form>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

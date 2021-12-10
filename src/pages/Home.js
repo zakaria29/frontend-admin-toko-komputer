@@ -1,10 +1,10 @@
 import React from "react"
-import axios from  "axios"
-import { base_url } from "../config";
+import axios from "axios"
+import { base_url, base_name } from "../config";
 import Navbar from "../components/Navbar"
 
-export default class Home extends React.Component{
-    constructor(){
+export default class Home extends React.Component {
+    constructor() {
         super()
         this.state = {
             token: "",
@@ -18,7 +18,7 @@ export default class Home extends React.Component{
         if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
         } else {
-            window.location = "/login"
+            window.location = base_name + "/login"
         }
     }
 
@@ -32,81 +32,81 @@ export default class Home extends React.Component{
     getProduct = () => {
         let url = base_url + "/product"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({productsCount: response.data.length})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ productsCount: response.data.length })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     getAdmins = () => {
         let url = base_url + "/admin"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({adminsCount: response.data.length})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ adminsCount: response.data.length })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     getCustomer = () => {
         let url = base_url + "/customer"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({customersCount: response.data.length})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ customersCount: response.data.length })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     getTransactions = () => {
         let url = base_url + "/transaksi"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({transactionsCount: response.data.length})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ transactionsCount: response.data.length })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     getAdmin = () => {
         let admin = JSON.parse(localStorage.getItem('admin'))
-        this.setState({adminName: admin.name})
+        this.setState({ adminName: admin.name })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getCustomer()
         this.getAdmins()
         this.getProduct()
@@ -114,7 +114,7 @@ export default class Home extends React.Component{
         this.getAdmin()
     }
 
-    render(){
+    render() {
         return (
             <div>
                 <Navbar />

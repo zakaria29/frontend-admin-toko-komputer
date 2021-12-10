@@ -1,12 +1,12 @@
 import React from "react"
 import Navbar from "../components/Navbar";
 import CustomerList from "../components/CustomerList";
-import { base_url, customer_image_url } from "../config.js";
+import { base_url, customer_image_url, base_name } from "../config.js";
 import $ from "jquery"
 import axios from "axios"
 
-export default class Customer extends React.Component{
-    constructor(){
+export default class Customer extends React.Component {
+    constructor() {
         super()
         this.state = {
             customers: [],
@@ -26,7 +26,7 @@ export default class Customer extends React.Component{
         if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
         } else {
-            window.location = "/login"
+            window.location = base_name + "/login"
         }
 
         this.headerConfig.bind(this)
@@ -42,19 +42,19 @@ export default class Customer extends React.Component{
     getCustomers = () => {
         let url = base_url + "/customer"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({customers: response.data})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ customers: response.data })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     Add = () => {
@@ -109,18 +109,18 @@ export default class Customer extends React.Component{
         let url = base_url + "/customer"
         if (this.state.action === "insert") {
             axios.post(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getCustomers()
-            })
-            .catch(error => console.log(error))
-        } else if(this.state.action === "update") {
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getCustomers()
+                })
+                .catch(error => console.log(error))
+        } else if (this.state.action === "update") {
             axios.put(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getCustomers()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getCustomers()
+                })
+                .catch(error => console.log(error))
         }
     }
 
@@ -128,118 +128,118 @@ export default class Customer extends React.Component{
         if (window.confirm("are you sure will delete this item?")) {
             let url = base_url + "/customer/" + selectedItem.customer_id
             axios.delete(url, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getCustomers()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getCustomers()
+                })
+                .catch(error => console.log(error))
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getCustomers()
     }
 
-    render(){
+    render() {
         return (
             <div>
-               <Navbar />
-               <div className="container">
-                   <h3 className="text-bold text-info mt-2">Customer List</h3>
-                   <div className="row">
-                       { this.state.customers.map( item => (
-                           <CustomerList
-                           key = {item.customer_id}
-                           name = {item.name}
-                           phone = {item.phone}
-                           address = {item.address}
-                           image = { customer_image_url + "/" + item.image}
-                           onEdit = {() => this.Edit(item)}
-                           onDrop = {() => this.dropCustomer(item)}
+                <Navbar />
+                <div className="container">
+                    <h3 className="text-bold text-info mt-2">Customer List</h3>
+                    <div className="row">
+                        {this.state.customers.map(item => (
+                            <CustomerList
+                                key={item.customer_id}
+                                name={item.name}
+                                phone={item.phone}
+                                address={item.address}
+                                image={customer_image_url + "/" + item.image}
+                                onEdit={() => this.Edit(item)}
+                                onDrop={() => this.dropCustomer(item)}
                             />
-                       )) }
-                   </div>
-                   <button className="btn btn-success" onClick={() => this.Add()}>
-                       Add Customer
-                   </button>
+                        ))}
+                    </div>
+                    <button className="btn btn-success" onClick={() => this.Add()}>
+                        Add Customer
+                    </button>
                 </div>
 
-                 {/* modal customer  */}
-                 <div className="modal fade" id="modal_customer">
-                     <div className="modal-dialog">
-                         <div className="modal-content">
-                             <div className="modal-header bg-info text-white">
-                                 <h4>Form Customer</h4>
-                             </div>
-                             <div className="modal-body">
-                                 <form onSubmit={ev => this.saveCustomer(ev)}>
-                                     Customer Name
-                                     <input type="text" className="form-control mb-1"
-                                     value={this.state.name}
-                                     onChange={ev => this.setState({name: ev.target.value})}
-                                     required
-                                     />
+                {/* modal customer  */}
+                <div className="modal fade" id="modal_customer">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header bg-info text-white">
+                                <h4>Form Customer</h4>
+                            </div>
+                            <div className="modal-body">
+                                <form onSubmit={ev => this.saveCustomer(ev)}>
+                                    Customer Name
+                                    <input type="text" className="form-control mb-1"
+                                        value={this.state.name}
+                                        onChange={ev => this.setState({ name: ev.target.value })}
+                                        required
+                                    />
 
                                     Customer Phone
-                                     <input type="text" className="form-control mb-1"
-                                     value={this.state.phone}
-                                     onChange={ev => this.setState({phone: ev.target.value})}
-                                     required
-                                     />
+                                    <input type="text" className="form-control mb-1"
+                                        value={this.state.phone}
+                                        onChange={ev => this.setState({ phone: ev.target.value })}
+                                        required
+                                    />
 
                                     Customer Address
-                                     <input type="text" className="form-control mb-1"
-                                     value={this.state.address}
-                                     onChange={ev => this.setState({address: ev.target.value})}
-                                     required
-                                     />
+                                    <input type="text" className="form-control mb-1"
+                                        value={this.state.address}
+                                        onChange={ev => this.setState({ address: ev.target.value })}
+                                        required
+                                    />
 
                                     Username
-                                     <input type="text" className="form-control mb-1"
-                                     value={this.state.username}
-                                     onChange={ev => this.setState({username: ev.target.value})}
-                                     required
-                                     />
+                                    <input type="text" className="form-control mb-1"
+                                        value={this.state.username}
+                                        onChange={ev => this.setState({ username: ev.target.value })}
+                                        required
+                                    />
 
-                                    { this.state.action === "update" && this.state.uploadFile === false ? (
+                                    {this.state.action === "update" && this.state.uploadFile === false ? (
                                         <button className="btn btn-sm btn-dark mb-1 btn-block"
-                                        onClick={() => this.setState({uploadFile: true})}>
+                                            onClick={() => this.setState({ uploadFile: true })}>
                                             Change Customer Image
                                         </button>
                                     ) : (
                                         <div>
                                             Customer Image
                                             <input type="file" className="form-control mb-1"
-                                            onChange={ev => this.setState({image: ev.target.files[0]})}
-                                            required
+                                                onChange={ev => this.setState({ image: ev.target.files[0] })}
+                                                required
                                             />
                                         </div>
-                                    ) }
+                                    )}
 
-                                    { this.state.action === "update" && this.state.fillPassword === false ? (
+                                    {this.state.action === "update" && this.state.fillPassword === false ? (
                                         <button className="btn btn-sm btn-secondary mb-1 btn-block"
-                                        onClick={() => this.setState({fillPassword: true})}>
+                                            onClick={() => this.setState({ fillPassword: true })}>
                                             Change Password
                                         </button>
                                     ) : (
                                         <div>
                                             Password
                                             <input type="password" className="form-control mb-1"
-                                            value={this.state.password}
-                                            onChange={ev => this.setState({password: ev.target.value})}
-                                            required
+                                                value={this.state.password}
+                                                onChange={ev => this.setState({ password: ev.target.value })}
+                                                required
                                             />
                                         </div>
-                                    ) }
+                                    )}
 
                                     <button type="submit" className="btn btn-block btn-success">
                                         Simpan
                                     </button>
-                                 </form>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

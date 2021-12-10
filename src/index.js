@@ -5,10 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
-import {BrowserRouter} from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename="/toko-komputer">
     <App />
   </BrowserRouter>,
   document.getElementById('root')

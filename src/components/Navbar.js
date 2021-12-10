@@ -1,13 +1,12 @@
 import React from "react"
-import {Link} from "react-router-dom"
-class Navbar extends React.Component{
+import { Link } from "react-router-dom"
+class Navbar extends React.Component {
     Logout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("admin")
-        window.location = "/login"
     }
-    render(){
-        return(
+    render() {
+        return (
             <div className="navbar navbar-expand-lg bg-dark navbar-dark">
                 <a className="navbar-brand">
                     Moklet Computer Store
@@ -15,7 +14,7 @@ class Navbar extends React.Component{
 
                 {/* show and hide menu */}
                 <button className="navbar-toggler" data-toggle="collapse"
-                data-target="#menu">
+                    data-target="#menu">
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
@@ -48,7 +47,7 @@ class Navbar extends React.Component{
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" onClick={() => this.Logout()}>
+                            <Link to="/login" className="nav-link" onClick={() => this.Logout()}>
                                 Logout
                             </Link>
                         </li>

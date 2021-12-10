@@ -1,11 +1,11 @@
 import React from "react"
 import axios from "axios"
-import { base_url } from "../config"
+import { base_url, base_name } from "../config"
 import Navbar from "../components/Navbar"
 import $ from "jquery"
 
-export default class Admin extends React.Component{
-    constructor(){
+export default class Admin extends React.Component {
+    constructor() {
         super()
         this.state = {
             token: "",
@@ -18,10 +18,10 @@ export default class Admin extends React.Component{
             fillPassword: true
         }
 
-        if(localStorage.getItem("token")){
+        if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
-        }else{
-            window.location = "/login"
+        } else {
+            window.location = base_name + "/login"
         }
     }
 
@@ -35,19 +35,19 @@ export default class Admin extends React.Component{
     getAdmins = () => {
         let url = base_url + "/admin"
         axios.get(url, this.headerConfig())
-        .then(response=> {
-            this.setState({admins: response.data})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ admins: response.data })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
     Add = () => {
@@ -82,26 +82,26 @@ export default class Admin extends React.Component{
             name: this.state.name,
             username: this.state.username
         }
-        
+
         if (this.state.fillPassword) {
-            form.password =  this.state.password
+            form.password = this.state.password
         }
 
         let url = base_url + "/admin"
         if (this.state.action === "insert") {
             axios.post(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getAdmins()
-            })
-            .catch(error => console.log(error))
-        } else if(this.state.action === "update") {
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getAdmins()
+                })
+                .catch(error => console.log(error))
+        } else if (this.state.action === "update") {
             axios.put(url, form, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getAdmins()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getAdmins()
+                })
+                .catch(error => console.log(error))
         }
     }
 
@@ -109,20 +109,20 @@ export default class Admin extends React.Component{
         if (window.confirm("are you sure will delete this item?")) {
             let url = base_url + "/admin/" + selectedItem.admin_id
             axios.delete(url, this.headerConfig())
-            .then(response => {
-                window.alert(response.data.message)
-                this.getAdmins()
-            })
-            .catch(error => console.log(error))
+                .then(response => {
+                    window.alert(response.data.message)
+                    this.getAdmins()
+                })
+                .catch(error => console.log(error))
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getAdmins()
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 <Navbar />
                 <div className="container">
@@ -139,17 +139,17 @@ export default class Admin extends React.Component{
                         <tbody>
                             {this.state.admins.map((item, index) => (
                                 <tr key={index}>
-                                    <td>{index+1}</td>
+                                    <td>{index + 1}</td>
                                     <td>{item.name}</td>
                                     <td>{item.username}</td>
                                     <td>
                                         <button className="btn btn-sm btn-info m-1"
-                                        onClick={() => this.Edit(item)}>
+                                            onClick={() => this.Edit(item)}>
                                             Edit
                                         </button>
 
                                         <button className="btn btn-sm btn-danger m-1"
-                                        onClick={() => this.dropAdmin(item)}>
+                                            onClick={() => this.dropAdmin(item)}>
                                             Hapus
                                         </button>
                                     </td>
@@ -158,7 +158,7 @@ export default class Admin extends React.Component{
                         </tbody>
                     </table>
                     <button className="btn btn-success" onClick={() => this.Add()}>
-                       Add Admin
+                        Add Admin
                     </button>
                     {/* modal admin  */}
                     <div className="modal fade" id="modal_admin">
@@ -171,33 +171,33 @@ export default class Admin extends React.Component{
                                     <form onSubmit={ev => this.saveAdmin(ev)}>
                                         Admin Name
                                         <input type="text" className="form-control mb-1"
-                                        value={this.state.name}
-                                        onChange={ev => this.setState({name: ev.target.value})}
-                                        required
+                                            value={this.state.name}
+                                            onChange={ev => this.setState({ name: ev.target.value })}
+                                            required
                                         />
 
                                         Username
                                         <input type="text" className="form-control mb-1"
-                                        value={this.state.username}
-                                        onChange={ev => this.setState({username: ev.target.value})}
-                                        required
+                                            value={this.state.username}
+                                            onChange={ev => this.setState({ username: ev.target.value })}
+                                            required
                                         />
 
-                                        { this.state.action === "update" && this.state.fillPassword === false ? (
+                                        {this.state.action === "update" && this.state.fillPassword === false ? (
                                             <button className="btn btn-sm btn-secondary mb-1 btn-block"
-                                            onClick={() => this.setState({fillPassword: true})}>
+                                                onClick={() => this.setState({ fillPassword: true })}>
                                                 Change Password
                                             </button>
                                         ) : (
                                             <div>
                                                 Password
                                                 <input type="password" className="form-control mb-1"
-                                                value={this.state.password}
-                                                onChange={ev => this.setState({password: ev.target.value})}
-                                                required
+                                                    value={this.state.password}
+                                                    onChange={ev => this.setState({ password: ev.target.value })}
+                                                    required
                                                 />
                                             </div>
-                                        ) }
+                                        )}
 
                                         <button type="submit" className="btn btn-block btn-success">
                                             Simpan

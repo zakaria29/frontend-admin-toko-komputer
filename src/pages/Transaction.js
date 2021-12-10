@@ -1,11 +1,11 @@
 import React from "react"
-import { base_url } from "../config";
+import { base_url, base_name } from "../config";
 import axios from "axios"
 import TransactionList from "../components/TransactionList"
 import Navbar from "../components/Navbar"
 
-export default class Transaction extends React.Component{
-    constructor(){
+export default class Transaction extends React.Component {
+    constructor() {
         super()
         this.state = {
             token: "",
@@ -16,7 +16,7 @@ export default class Transaction extends React.Component{
         if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
         } else {
-            window.location = "/login"
+            window.location = base_name + "/login"
         }
     }
 
@@ -31,42 +31,42 @@ export default class Transaction extends React.Component{
         let url = base_url + "/transaksi"
 
         axios.get(url, this.headerConfig())
-        .then(response => {
-            this.setState({transaction: response.data})
-        })
-        .catch(error => {
-            if (error.response) {
-                if(error.response.status) {
-                    window.alert(error.response.data.message)
-                    this.props.history.push("/login")
+            .then(response => {
+                this.setState({ transaction: response.data })
+            })
+            .catch(error => {
+                if (error.response) {
+                    if (error.response.status) {
+                        window.alert(error.response.data.message)
+                        this.props.history.push("/login")
+                    }
+                } else {
+                    console.log(error);
                 }
-            }else{
-                console.log(error);
-            }
-        })
+            })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getTransaction()
     }
 
-    render(){
+    render() {
         return (
             <div>
                 <Navbar />
 
                 <div className="container">
                     <h3 className="text-bold text-info mt-2">Transactions List</h3>
-                    { this.state.transaction.map(item => (
+                    {this.state.transaction.map(item => (
                         <TransactionList
-                        key = {item.transaksi_id}
-                        transaction_id = {item.transaksi_id}
-                        customer_name = {item.customer.name}
-                        customer_address = {item.customer.address}
-                        time = {item.waktu}
-                        products = {item.detail_transaksi}
-                         />
-                    )) }
+                            key={item.transaksi_id}
+                            transaction_id={item.transaksi_id}
+                            customer_name={item.customer.name}
+                            customer_address={item.customer.address}
+                            time={item.waktu}
+                            products={item.detail_transaksi}
+                        />
+                    ))}
                 </div>
             </div>
         )
